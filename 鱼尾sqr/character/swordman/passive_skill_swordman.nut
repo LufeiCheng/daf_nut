@@ -7,9 +7,21 @@ function ProcPassiveSkill_Swordman(obj, skill_index, skill_level) {
 		return true;
 }
 
+// 雷神之息技能处理函数
+function procSkill_FORCEOFTHUNDERER(obj) {
+	// 判断转职类型是否是阿修罗
+	if (sq_getGrowType(obj) == 4) {
+		// 判断是否已经附加了雷神之息ap
+		if (!CNSquirrelAppendage.sq_IsAppendAppendage(obj, "character/swordman/forceofthunderer/ap_forceofthunderer.nut")) {
+			CNSquirrelAppendage.sq_AppendAppendage(obj, obj, 255, true, "character/swordman/forceofthunderer/ap_forceofthunderer.nut", true);
+		}
+	}
+}
+
 function procSkill_Swordman(obj) {
 	if (!obj) return false;
-	procSkill_ghostSoulRelease(obj);//��?ۯ?
+	procSkill_FORCEOFTHUNDERER(obj);  // 雷神之息
+	procSkill_ghostSoulRelease(obj);//��?ۯ?
 	return true;
 }
 
