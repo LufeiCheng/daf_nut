@@ -1,0 +1,440 @@
+#PVF_File
+
+[LOOP]
+	1
+[SHADOW]
+	0
+[FRAME MAX]
+	48
+
+[FRAME000]
+	[IMAGE]
+		`Interface2/Keyoption/Keyoption.img`
+		61
+	[IMAGE POS]
+		0	0
+	[DELAY]
+		1000
+
+[FRAME001]
+	[IMAGE]
+		`Interface2/Keyoption/Keyoption.img`
+		52
+	[IMAGE POS]
+		0	0
+	[DELAY]
+		1000
+
+[FRAME002]
+	[IMAGE]
+		`Interface2/Keyoption/Keyoption.img`
+		106
+	[IMAGE POS]
+		0	0
+	[DELAY]
+		1000
+
+[FRAME003]
+	[IMAGE]
+		`Interface2/Keyoption/Keyoption.img`
+		79
+	[IMAGE POS]
+		0	0
+	[DELAY]
+		1000
+
+[FRAME004]
+	[IMAGE]
+		`Interface2/Keyoption/Keyoption.img`
+		55
+	[IMAGE POS]
+		0	0
+	[DELAY]
+		1000
+
+[FRAME005]
+	[IMAGE]
+		`Interface2/Keyoption/Keyoption.img`
+		56
+	[IMAGE POS]
+		0	0
+	[DELAY]
+		1000
+
+[FRAME006]
+	[IMAGE]
+		`Interface2/Keyoption/Keyoption.img`
+		53
+	[IMAGE POS]
+		0	0
+	[DELAY]
+		1000
+
+[FRAME007]
+	[IMAGE]
+		`Interface2/Keyoption/Keyoption.img`
+		54
+	[IMAGE POS]
+		0	0
+	[DELAY]
+		1000
+
+[FRAME008]
+	[IMAGE]
+		`Interface2/Keyoption/Keyoption.img`
+		94
+	[IMAGE POS]
+		0	0
+	[DELAY]
+		1000
+
+[FRAME009]
+	[IMAGE]
+		`Interface2/Keyoption/Keyoption.img`
+		78
+	[IMAGE POS]
+		0	0
+	[DELAY]
+		1000
+
+[FRAME010]
+	[IMAGE]
+		`Interface2/Keyoption/Keyoption.img`
+		92
+	[IMAGE POS]
+		0	0
+	[DELAY]
+		1000
+
+[FRAME011]
+	[IMAGE]
+		`Interface2/Keyoption/Keyoption.img`
+		93
+	[IMAGE POS]
+		0	0
+	[DELAY]
+		1000
+
+[FRAME012]
+	[IMAGE]
+		`Interface2/Keyoption/Keyoption.img`
+		97
+	[IMAGE POS]
+		0	0
+	[DELAY]
+		1000
+
+[FRAME013]
+	[IMAGE]
+		`Interface2/Keyoption/Keyoption.img`
+		62
+	[IMAGE POS]
+		0	0
+	[DELAY]
+		1000
+
+[FRAME014]
+	[IMAGE]
+		`Interface2/Keyoption/Keyoption.img`
+		69
+	[IMAGE POS]
+		0	0
+	[DELAY]
+		1000
+
+[FRAME015]
+	[IMAGE]
+		`Interface2/Keyoption/Keyoption.img`
+		87
+	[IMAGE POS]
+		0	0
+	[DELAY]
+		1000
+
+[FRAME016]
+	[IMAGE]
+		`Interface2/Keyoption/Keyoption.img`
+		59
+	[IMAGE POS]
+		0	0
+	[DELAY]
+		1000
+
+[FRAME017]
+	[IMAGE]
+		`Interface2/Keyoption/Keyoption.img`
+		60
+	[IMAGE POS]
+		0	0
+	[DELAY]
+		1000
+
+[FRAME018]
+	[IMAGE]
+		`Interface2/Keyoption/Keyoption.img`
+		57
+	[IMAGE POS]
+		0	0
+	[DELAY]
+		1000
+
+[FRAME019]
+	[IMAGE]
+		`Interface2/Keyoption/Keyoption.img`
+		58
+	[IMAGE POS]
+		0	0
+	[DELAY]
+		1000
+
+[FRAME020]
+	[IMAGE]
+		`Interface2/Keyoption/Keyoption.img`
+		63
+	[IMAGE POS]
+		0	0
+	[DELAY]
+		1000
+
+[FRAME021]
+	[IMAGE]
+		`Interface2/Keyoption/Keyoption.img`
+		101
+	[IMAGE POS]
+		0	0
+	[DELAY]
+		1000
+
+[FRAME022]
+	[IMAGE]
+		`Interface2/Keyoption/Keyoption.img`
+		98
+	[IMAGE POS]
+		0	0
+	[DELAY]
+		1000
+
+[FRAME023]
+	[IMAGE]
+		`Interface2/Keyoption/Keyoption.img`
+		110
+	[IMAGE POS]
+		0	0
+	[DELAY]
+		1000
+
+[FRAME024]
+	[IMAGE]
+		`Interface2/Keyoption/Keyoption.img`
+		109
+	[IMAGE POS]
+		0	0
+	[DELAY]
+		1000
+
+[FRAME025]
+	[IMAGE]
+		`Interface2/Keyoption/Keyoption.img`
+		108
+	[IMAGE POS]
+		0	0
+	[DELAY]
+		1000
+
+[FRAME026]
+	[IMAGE]
+		`Interface2/Keyoption/Keyoption.img`
+		107
+	[IMAGE POS]
+		0	0
+	[DELAY]
+		1000
+
+[FRAME027]
+	[IMAGE]
+		`Interface2/Keyoption/Keyoption.img`
+		75
+	[IMAGE POS]
+		0	0
+	[DELAY]
+		1000
+
+[FRAME028]
+	[IMAGE]
+		`Interface2/Keyoption/Keyoption.img`
+		104
+	[IMAGE POS]
+		0	0
+	[DELAY]
+		1000
+
+[FRAME029]
+	[IMAGE]
+		`Interface2/Keyoption/Keyoption.img`
+		74
+	[IMAGE POS]
+		0	0
+	[DELAY]
+		1000
+
+[FRAME030]
+	[IMAGE]
+		`Interface2/Keyoption/Keyoption.img`
+		102
+	[IMAGE POS]
+		0	0
+	[DELAY]
+		1000
+
+[FRAME031]
+	[IMAGE]
+		`Interface2/Keyoption/Keyoption.img`
+		96
+	[IMAGE POS]
+		0	0
+	[DELAY]
+		1000
+
+[FRAME032]
+	[IMAGE]
+		`Interface2/Keyoption/Keyoption.img`
+		51
+	[IMAGE POS]
+		0	0
+	[DELAY]
+		1000
+
+[FRAME033]
+	[IMAGE]
+		`Interface2/Keyoption/Keyoption.img`
+		89
+	[IMAGE POS]
+		0	0
+	[DELAY]
+		1000
+
+[FRAME034]
+	[IMAGE]
+		`Interface2/Keyoption/Keyoption.img`
+		95
+	[IMAGE POS]
+		0	0
+	[DELAY]
+		1000
+
+[FRAME035]
+	[IMAGE]
+		`Interface2/Keyoption/Keyoption.img`
+		90
+	[IMAGE POS]
+		0	0
+	[DELAY]
+		1000
+
+[FRAME036]
+	[IMAGE]
+		`Interface2/Keyoption/Keyoption.img`
+		91
+	[IMAGE POS]
+		0	0
+	[DELAY]
+		1000
+
+[FRAME037]
+	[IMAGE]
+		`Interface2/Keyoption/Keyoption.img`
+		73
+	[IMAGE POS]
+		0	0
+	[DELAY]
+		1000
+
+[FRAME038]
+	[IMAGE]
+		`Interface2/Keyoption/Keyoption.img`
+		105
+	[IMAGE POS]
+		0	0
+	[DELAY]
+		1000
+
+[FRAME039]
+	[IMAGE]
+		`Interface2/Keyoption/Keyoption.img`
+		103
+	[IMAGE POS]
+		0	0
+	[DELAY]
+		1000
+
+[FRAME040]
+	[IMAGE]
+		`Interface2/Keyoption/Keyoption.img`
+		71
+	[IMAGE POS]
+		0	0
+	[DELAY]
+		1000
+
+[FRAME041]
+	[IMAGE]
+		`Interface2/Keyoption/Keyoption.img`
+		80
+	[IMAGE POS]
+		0	0
+	[DELAY]
+		1000
+
+[FRAME042]
+	[IMAGE]
+		`Interface2/Keyoption/Keyoption.img`
+		77
+	[IMAGE POS]
+		0	0
+	[DELAY]
+		1000
+
+[FRAME043]
+	[IMAGE]
+		`Interface2/Keyoption/Keyoption.img`
+		76
+	[IMAGE POS]
+		0	0
+	[DELAY]
+		1000
+
+[FRAME044]
+	[IMAGE]
+		`Interface2/Keyoption/Keyoption.img`
+		83
+	[IMAGE POS]
+		0	0
+	[DELAY]
+		1000
+
+[FRAME045]
+	[IMAGE]
+		`Interface2/Keyoption/Keyoption.img`
+		82
+	[IMAGE POS]
+		0	0
+	[DELAY]
+		1000
+
+[FRAME046]
+	[IMAGE]
+		`Interface2/Keyoption/Keyoption.img`
+		72
+	[IMAGE POS]
+		0	0
+	[DELAY]
+		1000
+
+[FRAME047]
+	[IMAGE]
+		`Interface2/Keyoption/Keyoption.img`
+		81
+	[IMAGE POS]
+		0	0
+	[DELAY]
+		1000

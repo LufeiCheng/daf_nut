@@ -1,0 +1,343 @@
+// äù??õ³ ??ñÕ ?ÐùÔô? ûÝÕÉ ×ØÝ½
+PO_LIGHTNING_WALL_CREATE	<- 2; // ÜÌ?ÎÛ ?ÎÛ×ã?? state? 2ù¼Úñ ?×«Êµõµ.
+PO_LIGHTNING_WALL_MOVE		<- 3;
+PO_LIGHTNING_WALL_DESTROY	<- 4;
+
+PO_LIGHTNING_VAR_LIGHTNING_1 <- 0;
+PO_LIGHTNING_VAR_LIGHTNING_2 <- 1;
+PO_LIGHTNING_VAR_TARGET_X_POS <- 2;
+PO_LIGHTNING_VAR_DIRECTION	  <- 3; // ×ØÝ½ÕÉ ??? ?ûã äÓø· ??ñÕ ?ø· ??? ?×Ø
+
+
+PO_LIGHTNING_1_DISTANCE_X <- 61;
+PO_LIGHTNING_1_DISTANCE_Y <- 32;
+PO_LIGHTNING_2_DISTANCE_X <- -76;
+PO_LIGHTNING_2_DISTANCE_Y <- -32;
+
+PO_LIGHTNING_TIMER_BLACK_MARK_SMALL  <- 0; // ×«? Î¯? Öð? ?Ðù ?äï		
+PO_LIGHTNING_TIMER_BLACK_MARK_BIG	 <- 1; // Ò¿ Î¯? Öð? ?Ðù ?äï
+PO_LIGHTNING_TIMER_ELEC_MARK_1		 <- 2; // ?ø· Üõ? 1
+PO_LIGHTNING_TIMER_ELEC_MARK_2		 <- 3; // ?ø· Üõ? 2		
+		
+		
+
+// ??øÁ ??ÚñÜË ?Ë¬?? ??Öµ ?ÖÇ
+function lightingWallObjAniResizeing(parentObj, obj){
+	local parentChr = parentObj.getTopCharacter();
+	if(!parentChr)
+		return;
+		
+	local size = sq_GetIntData(parentChr, SKILL_LIGHTNING_WALL, 0);	
+	size = size.tofloat()/100.0;
+	
+	local ani = sq_GetCurrentAnimation(obj);	
+	if(ani)
+		ani.resizeWithChild(size);	
+}
+
+
+// ??Öµ ùÞÏëñÕ ïÊÝ× ??Ìû ÍÝÙ¹ÜË Ý¤Úí.
+function getLightningWallPos(obj, offset) {
+	local parentChr = obj.getTopCharacter();
+	if(!parentChr)
+		return offset;
+			
+	local walllGap = sq_GetIntData(parentChr, SKILL_LIGHTNING_WALL, 0);		
+	offset = offset.tofloat() * (walllGap.tofloat()/100.0);
+	
+	return offset.tointeger();	
+}
+
+// Î¯? ?ø· Üõ? ?Ðù
+function lightningWallMakeElectMark(obj, x, y)
+{
+	local randNum = sq_getRandom(0,1);
+	local elecMark  = sq_AddDrawOnlyAniFromParent(obj,"PassiveObject/Character/Mage/Animation/ATLightningWall/8_el-p2_dodge_" + randNum + ".ani", 0, 0, 0);
+	local x = obj.getXPos() + getLightningWallPos(obj, x);
+	local y = obj.getYPos() + getLightningWallPos(obj, y);
+	elecMark.setCurrentPos(x, y, 0);
+	lightingWallObjAniResizeing(obj, elecMark);
+	local ani = sq_GetCurrentAnimation(obj);
+}
+
+function setCustomData_po_ATLightningWall(obj, receiveData)
+{
+	if(!obj) return;
+		
+	local moveDistance = receiveData.readDword();	
+	local attackPower  = receiveData.readDword();	
+	local skill_level  = receiveData.readDword();	
+	local prob		   = receiveData.readFloat();	
+	local level		   = receiveData.readDword();	
+	local duration	   = receiveData.readDword();	
+	local lightDamage  = receiveData.readDword();	
+	local attackInfo = sq_GetCurrentAttackInfo(obj);
+	
+	sq_SetCurrentAttackBonusRate(attackInfo, attackPower);	
+	sq_SetChangeStatusIntoAttackInfoWithEtc(attackInfo, 0, ACTIVESTATUS_LIGHTNING ,prob.tointeger() ,level ,duration, lightDamage, 0);
+	sq_SetCurrentAttackeHitStunTime(attackInfo, 0);
+	
+	// ?öá äù??õ³ äÎÚ¶ ?Ðù
+	local var = obj.getVar();	
+	local lightningObj1 = sq_AddDrawOnlyAniFromParent(obj,"PassiveObject/Character/Mage/Animation/ATLightningWall/5_el-p_normal_1.ani", PO_LIGHTNING_1_DISTANCE_X, PO_LIGHTNING_1_DISTANCE_Y, 0);
+	local lightningObj2 = sq_AddDrawOnlyAniFromParent(obj,"PassiveObject/Character/Mage/Animation/ATLightningWall/5_el-p_normal_2.ani", PO_LIGHTNING_2_DISTANCE_X, PO_LIGHTNING_2_DISTANCE_Y, 0);
+	lightingWallObjAniResizeing(obj, lightningObj1);
+	lightingWallObjAniResizeing(obj, lightningObj2);
+	
+	var.setObject(PO_LIGHTNING_VAR_LIGHTNING_1, lightningObj1);
+	var.setObject(PO_LIGHTNING_VAR_LIGHTNING_2, lightningObj2);	
+		
+	local targetXPos = sq_GetDistancePos(50, sq_GetDirection(obj), moveDistance); // ??Ì«×××» x?? 
+	var.setInt(PO_LIGHTNING_VAR_TARGET_X_POS, targetXPos);	
+	var.setInt(PO_LIGHTNING_VAR_DIRECTION,  sq_GetDirection(obj));	
+		
+	// ûÝÕÉ ×ØÝ½? ?×åûã ?ûã ?Ý×áã??Îý Êµõµ.
+	obj.setDirection(ENUM_DIRECTION_RIGHT);
+	lightingWallObjAniResizeing(obj, obj);
+	
+	obj.sendStateOnlyPacket(PO_LIGHTNING_WALL_CREATE);
+}
+
+
+
+function onKeyFrameFlag_po_ATLightningWall(obj, keyIndex)
+{
+	// ?Ðù? ×³Óú
+	if(keyIndex == 1) {
+		sq_SetMyShake(obj,4,200);
+		return false;		
+	}
+	
+	return true;
+}
+
+
+
+function onTimeEvent_po_ATLightningWall(obj, timeEventIndex, timeEventCount)
+{
+	if(timeEventIndex == PO_LIGHTNING_TIMER_BLACK_MARK_SMALL) // Î¯?ñÕ ø¢ÓÞ? Öð?
+	{
+		if(obj.isCurrentAnimationIndex(0)) {			
+			local var = obj.getVar();
+			local lightningObj1 = var.getObject(PO_LIGHTNING_VAR_LIGHTNING_1);
+			local lightningObj2 = var.getObject(PO_LIGHTNING_VAR_LIGHTNING_2);
+						
+			if(lightningObj1) {					
+				local floorMark = sq_AddDrawOnlyAniFromParent(obj,"PassiveObject/Character/Mage/Animation/ATLightningWall/0_bottom_normal_1.ani", 0, 0, 0);
+				floorMark.setCurrentPos(lightningObj1.getXPos(), lightningObj1.getYPos(), 0);				
+				lightingWallObjAniResizeing(obj, floorMark);
+				sq_ChangeDrawLayer(floorMark, ENUM_DRAWLAYER_BOTTOM);				
+			}
+			
+			if(lightningObj2) {							
+				local floorMark = sq_AddDrawOnlyAniFromParent(obj,"PassiveObject/Character/Mage/Animation/ATLightningWall/0_bottom_normal_1.ani", 0, 0, 0);
+				floorMark.setCurrentPos(lightningObj2.getXPos(), lightningObj2.getYPos(), 0);					
+				lightingWallObjAniResizeing(obj, floorMark);
+				sq_ChangeDrawLayer(floorMark, ENUM_DRAWLAYER_BOTTOM);
+			}
+		
+			return false;
+		}
+		else
+			return true;
+		
+	}
+	else if(timeEventIndex == PO_LIGHTNING_TIMER_BLACK_MARK_BIG)  // Î¯?ñÕ ø¢ÓÞ? Öð?
+	{
+		if(obj.isCurrentAnimationIndex(0)) {		
+			local randNum = sq_getRandom(0,2);			
+			local floorDark = sq_AddDrawOnlyAniFromParent(obj,"PassiveObject/Character/Mage/Animation/ATLightningWall/0_bottom_normal_2.ani", 0, 0, 0);
+			sq_ChangeDrawLayer(floorDark, ENUM_DRAWLAYER_BOTTOM);
+			lightingWallObjAniResizeing(obj, floorDark);
+			
+			local floorElec = sq_AddDrawOnlyAniFromParent(obj,"PassiveObject/Character/Mage/Animation/ATLightningWall/4_el-b_dodge_" + randNum+ ".ani", 0, 0, 0);			
+			sq_ChangeDrawLayer(floorElec, ENUM_DRAWLAYER_BOTTOM);
+			lightingWallObjAniResizeing(obj, floorElec);
+			return false;
+		}
+		else 
+			return true;
+	}
+	else if(timeEventIndex == PO_LIGHTNING_TIMER_ELEC_MARK_1)  // ?ø· Öíûã
+	{
+		if(obj.isCurrentAnimationIndex(0)) {
+			lightningWallMakeElectMark(obj, PO_LIGHTNING_1_DISTANCE_X , PO_LIGHTNING_1_DISTANCE_Y);			
+			return false;
+		}
+		else 
+			return true;
+	}
+	else if(timeEventIndex == PO_LIGHTNING_TIMER_ELEC_MARK_2) // ?ø· Öíûã
+	{
+		if(obj.isCurrentAnimationIndex(0)) {
+			lightningWallMakeElectMark(obj, PO_LIGHTNING_2_DISTANCE_X , PO_LIGHTNING_2_DISTANCE_Y);
+			return false;
+		}
+		else 
+			return true;
+	}
+				
+				
+				
+	return true;	
+} 
+
+function setState_po_ATLightningWall(obj, state, datas)
+{
+	if(!obj) return;
+	
+	if(state == PO_LIGHTNING_WALL_MOVE) { //?Óú		
+		setCurrentAnimationFromCutomIndex(obj, 0);			
+		obj.sq_SetMoveParticle("Particle/ATLightningWall.ptl", 0.0, 0.0 );// ?Óú ?øÃÒ½ ×»?		
+			
+		local parentChr		= obj.getTopCharacter();
+		local size = sq_GetIntData(parentChr, SKILL_LIGHTNING_WALL, 0);	
+		size = size.tofloat()/100.0; //??Öµ. ??Öµ? ?? Î¯?ñÕ ?Í³×»ÜË øÉÝ¤? äïÛÈ? ã¯?õµ.
+		
+		local speed			= sq_GetIntData(parentChr, SKILL_LIGHTNING_WALL, 1);
+		local speedPerSec	= speed.tofloat()/1000.0;
+		local calltime		= 55.0/speedPerSec  * size;
+				
+		if(parentChr) {	
+			// ?×åûã äù??õ³ ?? Êµáã ???øËÝ« ?Öïõµ. ïÊäù? ?ðÂ??ñÕ? ðÈÜù÷úöá ??? ð¯øË Êµõµ.
+			if(parentChr.getDirection() != obj.getDirection()) 
+				speed = -speed;
+							
+			sq_SetSpeedToMoveParticle(obj,0,speed); // x? ??? ×»?			
+		}
+
+		obj.setTimeEvent(PO_LIGHTNING_TIMER_BLACK_MARK_SMALL, calltime.tointeger(),999,true); // ×«? Î¯? Öð? ?Ðù ?äï		
+		
+		calltime = 100.0/speedPerSec * size;		
+		obj.setTimeEvent(PO_LIGHTNING_TIMER_BLACK_MARK_BIG, calltime.tointeger(),999,true); // Ò¿ Î¯? Öð? ?Ðù ?äï
+		
+		calltime = 90.0/speedPerSec  * size;
+		obj.setTimeEvent(PO_LIGHTNING_TIMER_ELEC_MARK_1, calltime.tointeger(),999,true); // ?ø· Üõ?
+		
+		calltime = 110.0/speedPerSec  * size;
+		obj.setTimeEvent(PO_LIGHTNING_TIMER_ELEC_MARK_2, calltime.tointeger(),999,true); // ?ø· Üõ?
+		
+		local var = obj.getVar();
+		local lightningObj1 = var.getObject(PO_LIGHTNING_VAR_LIGHTNING_1);
+		local lightningObj2 = var.getObject(PO_LIGHTNING_VAR_LIGHTNING_2);					
+			
+		// ?Ñ¤? ??ø·    /|/|/|   <- ?Ûå Ý»Ý¤ äÓ? ?Ñ¤?
+		local currentAni = sq_GetCurrentAnimation(lightningObj1);
+		if(currentAni) {
+			currentAni.addLayerAnimation(6,sq_CreateAnimation("","PassiveObject/Character/Mage/Animation/ATLightningWall/7_el-p1_dodge_1.ani"),true);
+			
+			currentAni = sq_GetCurrentAnimation(lightningObj2);
+			currentAni.addLayerAnimation(6,sq_CreateAnimation("","PassiveObject/Character/Mage/Animation/ATLightningWall/7_el-p1_dodge_2.ani"),true);
+		}
+		lightingWallObjAniResizeing(obj, obj);
+	}
+	else if(state == PO_LIGHTNING_WALL_DESTROY) {
+		obj.sq_RemoveMoveParticle(); // ?Óú?		
+		setCurrentAnimationFromCutomIndex(obj, 1); // ?? ÏÑ?		
+		lightingWallObjAniResizeing(obj, obj);
+		
+		local var = obj.getVar();
+		local lightningObj1 = var.getObject(PO_LIGHTNING_VAR_LIGHTNING_1);
+		local lightningObj2 = var.getObject(PO_LIGHTNING_VAR_LIGHTNING_2);
+		if(lightningObj1 && lightningObj2) {
+			lightningObj1.setValid(false);
+			lightningObj2.setValid(false);
+			
+			lightningObj1 = sq_AddDrawOnlyAniFromParent(obj,"PassiveObject/Character/Mage/Animation/ATLightningWall/d5_el-p_normal_1.ani", PO_LIGHTNING_1_DISTANCE_X, PO_LIGHTNING_1_DISTANCE_Y, 0);
+			lightningObj2 = sq_AddDrawOnlyAniFromParent(obj,"PassiveObject/Character/Mage/Animation/ATLightningWall/d5_el-p_normal_2.ani", PO_LIGHTNING_2_DISTANCE_X, PO_LIGHTNING_2_DISTANCE_Y, 0);
+			
+			var.setObject(PO_LIGHTNING_VAR_LIGHTNING_1, lightningObj1);
+			var.setObject(PO_LIGHTNING_VAR_LIGHTNING_2, lightningObj2);		
+		}
+	}
+}
+
+function onAttack_po_ATLightningWall(obj, damager, boundingBox, isStuck)
+{	
+	if(sq_IsHoldable(obj,damager) && sq_IsGrabable(obj,damager) && !sq_IsFixture(damager)) {	
+		local parentChr = obj.getTopCharacter();
+		local masterAppendage = CNSquirrelAppendage.sq_AppendAppendage(damager, obj, SKILL_LIGHTNING_WALL, false, "Character/ATMage/LightningWall/ap_LightningWall.nut", true);				 
+		if(parentChr && masterAppendage) {			
+			sq_HoldAndDelayDie(damager, obj, true, true, true, 200, 200, ENUM_DIRECTION_NEUTRAL , masterAppendage);			
+	
+			local time = sq_GetIntData(parentChr, SKILL_LIGHTNING_WALL, 3); // ×»×»×µ ÷ú×µ?äï
+			local appendageInfo = masterAppendage.getAppendageInfo();
+			appendageInfo.setValidTime(time);
+		}
+	}
+	return 0;
+}
+
+function procAppend_po_ATLightningWall(obj)
+{
+	if(!obj) return;
+	local var = obj.getVar();
+	
+	if(!var) return;
+	
+	local lightningObj1 = var.getObject(PO_LIGHTNING_VAR_LIGHTNING_1);
+	local lightningObj2 = var.getObject(PO_LIGHTNING_VAR_LIGHTNING_2);
+	
+	local pos1X = getLightningWallPos(obj, PO_LIGHTNING_1_DISTANCE_X);	
+	local pos1Y = getLightningWallPos(obj, PO_LIGHTNING_1_DISTANCE_Y);
+	local pos2X = getLightningWallPos(obj, PO_LIGHTNING_2_DISTANCE_X);
+	local pos2Y = getLightningWallPos(obj, PO_LIGHTNING_2_DISTANCE_Y);
+			
+	if(lightningObj1)
+		lightningObj1.setCurrentPos(obj.getXPos() + pos1X.tointeger(), obj.getYPos()+ pos1Y.tointeger(), obj.getZPos()); // ??? ñÐ?äù ?? ÏÑ?øË ÛÎÚ¶.
+	if(lightningObj2)
+		lightningObj2.setCurrentPos(obj.getXPos() + pos2X.tointeger(), obj.getYPos()+ pos2Y.tointeger(), obj.getZPos());	
+	
+	local targetXPos = var.getInt(PO_LIGHTNING_VAR_TARGET_X_POS);
+	local direction = var.getInt(PO_LIGHTNING_VAR_DIRECTION);
+	
+	if(direction == ENUM_DIRECTION_RIGHT) {
+		if(obj.getXPos() > targetXPos)
+		{	
+			sq_SetCurrentPos(obj, targetXPos, obj.getYPos(), obj.getZPos());
+			obj.sendStateOnlyPacket(PO_LIGHTNING_WALL_DESTROY);
+		}
+	}
+	else if(direction == ENUM_DIRECTION_LEFT) {
+		if(obj.getXPos() < targetXPos)
+		{	
+			sq_SetCurrentPos(obj, targetXPos, obj.getYPos(), obj.getZPos());
+			obj.sendStateOnlyPacket(PO_LIGHTNING_WALL_DESTROY);
+		}
+	}
+	else {
+		obj.sendStateOnlyPacket(PO_LIGHTNING_WALL_DESTROY);	 // ??? ??? ?äù×»×» Ï¿??øË ??
+	}
+	
+
+}
+
+
+function onEndCurrentAni_po_ATLightningWall(obj)
+{
+	if(!obj) return;
+	
+	if(obj.isCurrentAnimationIndex(1)) {
+		if(obj.isMyControlObject())
+			sq_SendDestroyPacketPassiveObject(obj); // ?äù×»? Êç?? ??
+	}
+}
+
+function onDestroyObject_po_ATLightningWall(obj, destroyObj)
+{
+	if(!obj || isSameObject(obj,destroyObj)) {
+		local var = obj.getVar();
+		local lightningObj1 = var.getObject(PO_LIGHTNING_VAR_LIGHTNING_1);
+		local lightningObj2 = var.getObject(PO_LIGHTNING_VAR_LIGHTNING_2);
+		if(lightningObj1)
+			lightningObj1.setValid(false); // ??? ñÐ?äù ?? ÏÑ?øË ÛÎÚ¶.
+		if(lightningObj2)
+			lightningObj2.setValid(false);
+	}
+	
+	local parentChr = obj.getTopCharacter();
+	if(isSameObject(obj,parentChr)) {
+		if(obj.isMyControlObject())
+			sq_SendDestroyPacketPassiveObject(obj); 		
+	}		
+}
