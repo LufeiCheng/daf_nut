@@ -45,15 +45,20 @@ function summon_FORCEOFTHUNDERER(obj)
 
 		if (tarX + tarY != 0)
 		{
-			local power = 5652;
-			// 大小
-			local size = 140;
+			// 固定伤害
+			local power = obj.sq_GetPowerWithPassive(47, -1, 6, -1, 1.0);
+			// 获取波动刻印技能等级
+			local level = sq_GetSkillLevel(obj, 47);
+			// 范围
+			local size = sq_GetIntData(obj, 47, 8, level);
 			// 感电等级
-			local gdLeve = 80;
+			local gdLeve = sq_GetIntData(obj, 47, 6, level);
 			// 感电时间
-			local gdTime = 5652;
-			local gdProc = 100;
-			local gdRate = 100;
+			local gdTime = sq_GetIntData(obj, 47, 7, level);
+			// 感电百分比？
+			local gdProc = sq_GetLevelData(obj, 47, 7, level);
+			// 感电伤害
+			local gdRate = obj.sq_GetPowerWithPassive(47, -1, 8, -1, 0.18);
 
 			obj.sq_StartWrite();
 			obj.sq_WriteDword(255); // 使用鱼尾版本的技能ID
@@ -85,7 +90,7 @@ function proc_appendage_FORCEOFTHUNDERER(appendage)
 	}
 	local currentT = appendage.getTimer().Get();
     local startT = appendage.getVar("t").get_vector(0);
-    if (currentT - startT > 1800 )
+    if (currentT - startT > parentObj.sq_GetIntData( 47, 5) )
     {
         summon_FORCEOFTHUNDERER(parentObj);
         appendage.getVar("t").set_vector(0,currentT);
