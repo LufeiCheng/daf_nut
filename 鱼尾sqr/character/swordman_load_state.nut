@@ -21,6 +21,7 @@ IRDSQRCharacter.pushState(ENUM_CHARACTERJOB_SWORDMAN, "character/swordman/Illusi
 
 //?í­??
 IRDSQRCharacter.pushPassiveObj("character/swordman/wavemark/po_wavemark_wave.nut", 24370);//obj for wavemark
+IRDSQRCharacter.pushPassiveObj("passiveobject/character/swordman/po_forceofthunderer.nut", 24371);//obj for forceofthunderer
 
 IRDSQRCharacter.pushState(ENUM_CHARACTERJOB_SWORDMAN, "character/swordman/attack.nut", "swordmanAttack", 8, -1);//pingA hook
  IRDSQRCharacter.pushState(ENUM_CHARACTERJOB_SWORDMAN, "Character/swordman/throw.nut", "swordmanThrow", 13, -1);//throw

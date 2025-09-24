@@ -85,7 +85,7 @@ function proc_appendage_FORCEOFTHUNDERER(appendage)
 	}
 	local currentT = appendage.getTimer().Get();
     local startT = appendage.getVar("t").get_vector(0);
-    if (currentT - startT > parentObj.sq_GetIntData( SKILL_FORCEOFTHUNDERER, 0) )
+    if (currentT - startT > 1800 )
     {
         summon_FORCEOFTHUNDERER(parentObj);
         appendage.getVar("t").set_vector(0,currentT);
