@@ -10,6 +10,9 @@ function ProcPassiveSkill_Swordman(obj, skill_index, skill_level) {
 // 雷神之息技能处理函数
 function procSkill_FORCEOFTHUNDERER(obj) {
 	// 判断转职类型是否是阿修罗
+	local cancel_flag = obj.sq_GetIntData(47, 9);
+	if(!cancel_flag) return;
+
 	if (sq_getGrowType(obj) == 4) {
 		// 判断是否已经附加了雷神之息ap
 		if (!CNSquirrelAppendage.sq_IsAppendAppendage(obj, "character/swordman/forceofthunderer/ap_forceofthunderer.nut")) {
